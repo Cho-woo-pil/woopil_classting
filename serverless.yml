@@ -23,6 +23,7 @@ frameworkVersion: "3"
 provider:
   name: aws
   runtime: nodejs18.x
+  region: ap-northeast-2
 
 plugins:
   - serverless-plugin-typescript
@@ -66,12 +67,19 @@ plugins:
 #    handler: handler.hello
 
 functions:
-  example:
-    handler: src/example.handler
+  signup:
+    handler: src/user/signup.handler
     events:
       - http:
-          path: /
-          method: any
+          path: /signup
+          method: post
+
+  login:
+    handler: src/user/login.handler
+    events:
+      - http:
+          path: /login
+          method: post
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
