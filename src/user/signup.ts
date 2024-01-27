@@ -31,7 +31,6 @@ export const handler = async (event: any) => {
 
         const attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
         const attributeGivenName = new AmazonCognitoIdentity.CognitoUserAttribute(dataGivenName);
-
         attributeList.push(attributeEmail);
         attributeList.push(attributeGivenName);
 

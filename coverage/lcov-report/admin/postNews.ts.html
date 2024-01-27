@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.16% </span>
+                <span class="strong">74.19% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/24</span>
+                <span class='fraction'>23/31</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.27% </span>
+                <span class="strong">72.41% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/22</span>
+                <span class='fraction'>21/29</span>
             </div>
         
             
@@ -119,7 +119,29 @@
 <a name='L54'></a><a href='#L54'>54</a>
 <a name='L55'></a><a href='#L55'>55</a>
 <a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -149,12 +171,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -177,7 +221,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as AWS from "aws-sdk";
 import { decode } from 'jsonwebtoken';
-import {News, School} from "../entity";
+import {News, NewsFeed, School, Subscription} from "../entity";
 &nbsp;
 &nbsp;
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
@@ -205,12 +249,34 @@ export const handler = async (event: any) =&gt; {
                     body: JSON.stringify({error: "schoolId, topic and content are required fields"}),
                 };
             }
+&nbsp;
+            const news = new News(schoolId, topic, content);
             const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
                 TableName: "news",
-                Item: new News(schoolId, topic, content)
+                Item: news
             };
             // DynamoDB에 데이터 삽입
             await dynamoDb.put(params).promise();
+&nbsp;
+            // DynamoDB에서 isDeleted가 false인 Subscription 찾기
+            const subscriptionParams: AWS.DynamoDB.DocumentClient.ScanInput = {
+                TableName: "subscription",
+                FilterExpression: "isDeleted = :isDeleted AND schoolId = :schoolId",
+                ExpressionAttributeValues: {
+                    ":isDeleted": false,
+                    ":schoolId": schoolId
+                },
+            };
+            const subscriptionsResult = await dynamoDb.scan(subscriptionParams).promise();
+            // newsFeed 테이블에 등록
+            for (const subscription of subscriptionsResult.Items as Subscription[]) {
+                const newsFeed = <span class="cstat-no" title="statement not covered" >new NewsFeed(news.newsId, subscription.username);</span>
+                const newsFeedParams: AWS.DynamoDB.DocumentClient.PutItemInput = <span class="cstat-no" title="statement not covered" >{</span>
+                    TableName: "newsFeed",
+                    Item: newsFeed,
+                };
+<span class="cstat-no" title="statement not covered" >                await dynamoDb.put(newsFeedParams).promise();</span>
+            }
 &nbsp;
             return {
                 statusCode: 200,
@@ -238,7 +304,7 @@ export const handler = async (event: any) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-01-27T15:56:59.487Z
+                at 2024-01-27T19:05:59.660Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -7,23 +7,32 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 export const handler = async (event: any) => {
     try {
         const token = event.headers.Authorization;
-
+        const decodedToken: any = decode(token);
+        const username = decodedToken?.given_name
         if (!token) {
             return {
                 statusCode: 401,
                 body: JSON.stringify({error: "Unauthorized"}),
             };
         }
-        const scanParams: AWS.DynamoDB.DocumentClient.ScanInput = {
-            TableName: "school",
-        };
 
-        const schoolList = await dynamoDb.scan(scanParams).promise();
+        if(username){
+            const scanParams: AWS.DynamoDB.DocumentClient.ScanInput = {
+                TableName: "school",
+            };
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify({schoolList}),
-        };
+            const schoolList = await dynamoDb.scan(scanParams).promise();
+
+            return {
+                statusCode: 200,
+                body: JSON.stringify({schoolList}),
+            };
+        } else{
+            return {
+                statusCode: 401,
+                body: JSON.stringify({error: "Token Error"}),
+            };
+        }
 
     } catch (error) {
         console.error("Error:", error);
