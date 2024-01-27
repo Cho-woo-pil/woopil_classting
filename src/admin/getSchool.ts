@@ -1,6 +1,5 @@
 import * as AWS from "aws-sdk";
 import { decode } from 'jsonwebtoken';
-import {School} from "../entity";
 
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
@@ -18,34 +17,23 @@ export const handler = async (event: any) => {
         const decodedToken: any = decode(token);
         const groups = decodedToken['cognito:groups'];
         if (groups && groups.includes('admin')) {
-            const body = JSON.parse(event.body);
-
-            const {name, region} = body;
-
-            if (!name || !region) {
-                return {
-                    statusCode: 400,
-                    body: JSON.stringify({error: "name, and region are required fields"}),
-                };
-            }
-            const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
+            const scanParams: AWS.DynamoDB.DocumentClient.ScanInput = {
                 TableName: "school",
-                Item: new School(name, region)
             };
-            // DynamoDB에 데이터 삽입
-            await dynamoDb.put(params).promise();
+
+            const schoolList = await dynamoDb.scan(scanParams).promise();
 
             return {
                 statusCode: 200,
-                body: JSON.stringify({message: "School registered successfully"}),
+                body: JSON.stringify({ schoolList }),
             };
+
         } else {
             return {
                 statusCode: 200,
                 body: JSON.stringify({message: "This user is not admin"}),
             };
         }
-
 
     } catch (error) {
         console.error("Error:", error);

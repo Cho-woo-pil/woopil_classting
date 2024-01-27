@@ -1,4 +1,4 @@
-export interface postSchoolDto {
+export interface PostSchoolDto {
     name: string;
     region: string;
 }
