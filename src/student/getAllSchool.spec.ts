@@ -1,6 +1,6 @@
 import AWS from "aws-sdk";
 AWS.config.update({ region: 'ap-northeast-2' });
-import { handler } from './getSchool';
+import { handler } from './getAllSchool';
 import AWSMock from 'aws-sdk-mock';
 import jsonwebtoken from 'jsonwebtoken';
 
