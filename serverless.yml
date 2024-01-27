@@ -42,7 +42,7 @@ custom:
     basePath: '/dev'
     apiKeyHeaders: ['Authorization']
     schemes: ["http"]
-    typefiles: ['./src/dto/signupDto.ts', './src/dto/loginDto.ts', './src/dto/postSchoolDto.ts']
+    typefiles: ['./src/dto/user/signupDto.ts', './src/dto/user/loginDto.ts', './src/dto/admin/postSchoolDto.ts', './src/dto/admin/postNewsDto.ts', './src/dto/admin/patchNewsDto.ts', './src/dto/admin/deleteNewsDto.ts']
 
 
 functions:
@@ -74,9 +74,52 @@ functions:
     handler: src/admin/postSchool.handler
     events:
       - http:
-          path: /school
+          path: admin/school
           method: post
           cors: true
           summary: '학교 등록 API'
           swaggerTags: ['Admin']
-          bodyType: postSchoolDto
+          bodyType: PostSchoolDto
+
+  getSchool:
+    handler: src/admin/getSchool.handler
+    events:
+      - http:
+          path: admin/school
+          method: get
+          cors: true
+          summary: '학교 조회 API'
+          swaggerTags: [ 'Admin' ]
+
+  postNews:
+    handler: src/admin/postNews.handler
+    events:
+      - http:
+          path: admin/news
+          method: post
+          cors: true
+          summary: '뉴스 등록 API'
+          swaggerTags: [ 'Admin' ]
+          bodyType: PostNewsDto
+
+  patchNews:
+    handler: src/admin/patchNews.handler
+    events:
+      - http:
+          path: admin/news
+          method: patch
+          cors: true
+          summary: '뉴스 수정 API'
+          swaggerTags: [ 'Admin' ]
+          bodyType: PatchNewsDto
+
+  deleteNews:
+    handler: src/admin/deleteNews.handler
+    events:
+      - http:
+          path: admin/news
+          method: delete
+          cors: true
+          summary: '뉴스 삭제 API'
+          swaggerTags: [ 'Admin' ]
+          bodyType: DeleteNewsDto
