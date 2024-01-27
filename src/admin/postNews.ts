@@ -17,7 +17,6 @@ export const handler = async (event: any) => {
         }
         const decodedToken: any = decode(token);
         const groups = decodedToken['cognito:groups'];
-        const email = decodedToken?.email
         if (groups && groups.includes('admin')) {
             const body = JSON.parse(event.body);
 
@@ -41,16 +40,16 @@ export const handler = async (event: any) => {
             // DynamoDB에서 isDeleted가 false인 Subscription 찾기
             const subscriptionParams: AWS.DynamoDB.DocumentClient.ScanInput = {
                 TableName: "subscription",
-                FilterExpression: "isDeleted = :isDeleted AND email = :email",
+                FilterExpression: "isDeleted = :isDeleted AND schoolId = :schoolId",
                 ExpressionAttributeValues: {
                     ":isDeleted": false,
-                    ":email": email,
+                    ":schoolId": schoolId
                 },
             };
             const subscriptionsResult = await dynamoDb.scan(subscriptionParams).promise();
             // newsFeed 테이블에 등록
             for (const subscription of subscriptionsResult.Items as Subscription[]) {
-                const newsFeed = new NewsFeed(news.newsId, subscription.email);
+                const newsFeed = new NewsFeed(news.newsId, subscription.username);
                 const newsFeedParams: AWS.DynamoDB.DocumentClient.PutItemInput = {
                     TableName: "newsFeed",
                     Item: newsFeed,

@@ -40,9 +40,9 @@ custom:
   autoswagger:
     title: '클래스팅 API 테스트'
     basePath: '/dev'
-    apiKeyHeaders: ['Authorization']
-    schemes: ["http"]
-    typefiles: ['./src/dto/user/signupDto.ts', './src/dto/user/loginDto.ts', './src/dto/admin/postSchoolDto.ts', './src/dto/admin/postNewsDto.ts', './src/dto/admin/patchNewsDto.ts', './src/dto/admin/deleteNewsDto.ts']
+    apiKeyHeaders: [ 'Authorization' ]
+    schemes: [ "http" ]
+    typefiles: [ './src/dto/user/signupDto.ts', './src/dto/user/loginDto.ts', './src/dto/admin/postSchoolDto.ts', './src/dto/admin/postNewsDto.ts', './src/dto/admin/patchNewsDto.ts', './src/dto/admin/deleteNewsDto.ts', './src/dto/student/subscribeDto.ts' ]
 
 
 functions:
@@ -54,7 +54,7 @@ functions:
           method: post
           cors: true
           summary: '회원가입 API'
-          swaggerTags: ['User']
+          swaggerTags: [ 'User' ]
           bodyType: SignupDto
 
 
@@ -66,7 +66,7 @@ functions:
           method: post
           cors: true
           summary: '로그인 API'
-          swaggerTags: ['User']
+          swaggerTags: [ 'User' ]
           bodyType: LoginDto
 
 
@@ -78,18 +78,8 @@ functions:
           method: post
           cors: true
           summary: '학교 등록 API'
-          swaggerTags: ['Admin']
-          bodyType: PostSchoolDto
-
-  getSchool:
-    handler: src/admin/getSchool.handler
-    events:
-      - http:
-          path: admin/school
-          method: get
-          cors: true
-          summary: '학교 조회 API'
           swaggerTags: [ 'Admin' ]
+          bodyType: PostSchoolDto
 
   postNews:
     handler: src/admin/postNews.handler
@@ -123,3 +113,45 @@ functions:
           summary: '뉴스 삭제 API'
           swaggerTags: [ 'Admin' ]
           bodyType: DeleteNewsDto
+
+  getSchool:
+    handler: src/student/getAllSchool.handler
+    events:
+      - http:
+          path: student/school/all
+          method: get
+          cors: true
+          summary: '모든 학교 조회 API'
+          swaggerTags: [ 'student' ]
+
+  getSubscribeSchool:
+    handler: src/student/getSubscribeSchool.handler
+    events:
+      - http:
+          path: student/school/subscribe
+          method: get
+          cors: true
+          summary: '구독한 학교 조회 API'
+          swaggerTags: [ 'student' ]
+
+  subscribe:
+    handler: src/student/subscribe.handler
+    events:
+      - http:
+          path: student/subscribe
+          method: post
+          cors: true
+          summary: '학교 구독 API'
+          swaggerTags: [ 'student' ]
+          bodyType: SubscribeDto
+
+  unSubscribe:
+    handler: src/student/unSubscribe.handler
+    events:
+      - http:
+          path: student/subscribe
+          method: patch
+          cors: true
+          summary: '학교 구독 취소 API'
+          swaggerTags: [ 'student' ]
+          bodyType: SubscribeDto

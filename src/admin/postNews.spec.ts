@@ -29,7 +29,7 @@ describe('postNews', () => {
 
         jest.spyOn(jsonwebtoken, 'decode').mockImplementation((token: string) => ({
             'cognito:groups': ['admin'],
-            email: 'test@example.com'
+            username: 'testUser'
         }));
         const event = {
             headers: {

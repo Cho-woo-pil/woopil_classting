@@ -115,31 +115,6 @@
             "description": "200 response"
           }
         }
-      },
-      "get": {
-        "summary": "학교 조회 API",
-        "description": "",
-        "tags": [
-          "Admin"
-        ],
-        "operationId": "getSchool.get.admin/school",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "200 response"
-          }
-        }
       }
     },
     "/admin/news": {
@@ -239,6 +214,132 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/DeleteNewsDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      }
+    },
+    "/student/school/all": {
+      "get": {
+        "summary": "모든 학교 조회 API",
+        "description": "",
+        "tags": [
+          "student"
+        ],
+        "operationId": "getSchool.get.student/school/all",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      }
+    },
+    "/student/school/subscribe": {
+      "get": {
+        "summary": "구독한 학교 조회 API",
+        "description": "",
+        "tags": [
+          "student"
+        ],
+        "operationId": "getSubscribeSchool.get.student/school/subscribe",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      }
+    },
+    "/student/subscribe": {
+      "post": {
+        "summary": "학교 구독 API",
+        "description": "",
+        "tags": [
+          "student"
+        ],
+        "operationId": "subscribe.post.student/subscribe",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Body required in the request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubscribeDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      },
+      "patch": {
+        "summary": "학교 구독 취소 API",
+        "description": "",
+        "tags": [
+          "student"
+        ],
+        "operationId": "unSubscribe.patch.student/subscribe",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Body required in the request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubscribeDto"
             }
           }
         ],
@@ -373,6 +474,20 @@
       ],
       "additionalProperties": false,
       "title": "DeleteNewsDto",
+      "type": "object"
+    },
+    "SubscribeDto": {
+      "properties": {
+        "schoolId": {
+          "title": "SubscribeDto.schoolId",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schoolId"
+      ],
+      "additionalProperties": false,
+      "title": "SubscribeDto",
       "type": "object"
     }
   },
