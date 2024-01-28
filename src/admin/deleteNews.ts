@@ -38,7 +38,7 @@ export const handler = async (event: any) => {
             // 기존 뉴스 가져오기
             const getParams: AWS.DynamoDB.DocumentClient.GetItemInput = {
                 TableName: "news",
-                Key: { newsId },
+                Key: { newsId: newsId  },
             };
 
             const existingNews = await dynamoDb.get(getParams).promise();
@@ -57,7 +57,7 @@ export const handler = async (event: any) => {
             // 뉴스 삭제
             const deletedParam: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
                 TableName: "news",
-                Key: { newsId },
+                Key: { newsId: newsId  },
                 UpdateExpression: "SET #isDeleted = :isDeleted, #deletedAt = :deletedAt",
                 ExpressionAttributeNames: {
                     "#isDeleted": "isDeleted",

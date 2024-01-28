@@ -39,7 +39,7 @@ export const handler = async (event: any) => {
             // 기존 뉴스 가져오기
             const getParams: AWS.DynamoDB.DocumentClient.GetItemInput = {
                 TableName: "news",
-                Key: { newsId },
+                Key: { newsId: newsId },
             };
 
             const existingNews = await dynamoDb.get(getParams).promise();
@@ -58,7 +58,7 @@ export const handler = async (event: any) => {
             // 뉴스 수정
             const updateParams: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
                 TableName: "news",
-                Key: { newsId },
+                Key: { newsId: newsId  },
                 UpdateExpression: "SET #topic = :topic, #content = :content, #updatedAt = :updatedAt",
                 ExpressionAttributeNames: {
                     "#topic": "topic",
@@ -72,6 +72,7 @@ export const handler = async (event: any) => {
                 },
                 ReturnValues: "ALL_NEW",
             };
+            console.log('updateParams:', updateParams);
             await dynamoDb.update(updateParams).promise();
 
 
@@ -97,6 +98,8 @@ export const handler = async (event: any) => {
 
     } catch (error) {
         console.error("Error:", error);
+        // @ts-ignore
+        console.error("Error details:", error.stack);
         return {
             statusCode: 500,
             headers: {
