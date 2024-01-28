@@ -41,9 +41,9 @@ custom:
     title: '클래스팅 API 테스트'
     basePath: '/dev'
     apiKeyHeaders: [ 'Authorization' ]
-    schemes: [ "http" ]
     typefiles: [ './src/dto/user/signupDto.ts', './src/dto/user/loginDto.ts', './src/dto/admin/postSchoolDto.ts', './src/dto/admin/postNewsDto.ts', './src/dto/admin/patchNewsDto.ts', './src/dto/admin/deleteNewsDto.ts', './src/dto/student/subscribeDto.ts' ]
-
+    schemes: ['http', 'https', 'ws', 'wss']
+    host: 'mlpp1t87sj.execute-api.ap-northeast-2.amazonaws.com'
 
 functions:
   signup:

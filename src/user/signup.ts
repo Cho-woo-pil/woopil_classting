@@ -15,6 +15,10 @@ export const handler = async (event: any) => {
         if (password.length < 8) {
             return {
                 statusCode: 400,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
+                },
                 body: JSON.stringify({ message: 'Password must be at least 8 characters long' }),
             };
         }
@@ -61,6 +65,10 @@ export const handler = async (event: any) => {
 
         return {
             statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+            },
             body: JSON.stringify({ message: 'User registered successfully', result }),
         };
     } catch (error) {
