@@ -29,14 +29,6 @@ export const handler = async (event: any) => {
                 };
             }
 
-            const news = new News(schoolId, topic, content);
-            const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
-                TableName: "news",
-                Item: news
-            };
-            // DynamoDB에 데이터 삽입
-            await dynamoDb.put(params).promise();
-
             // DynamoDB에서 isDeleted가 false인 Subscription 찾기
             const subscriptionParams: AWS.DynamoDB.DocumentClient.ScanInput = {
                 TableName: "subscription",
@@ -47,15 +39,36 @@ export const handler = async (event: any) => {
                 },
             };
             const subscriptionsResult = await dynamoDb.scan(subscriptionParams).promise();
-            // newsFeed 테이블에 등록
+
+
+            const news = new News(schoolId, topic, content);
+            const transactItems = [];
+
+
             for (const subscription of subscriptionsResult.Items as Subscription[]) {
                 const newsFeed = new NewsFeed(news.newsId, subscription.username);
-                const newsFeedParams: AWS.DynamoDB.DocumentClient.PutItemInput = {
-                    TableName: "newsFeed",
-                    Item: newsFeed,
-                };
-                await dynamoDb.put(newsFeedParams).promise();
+
+                transactItems.push({
+                    Put: {
+                        TableName: "newsFeed",
+                        Item: newsFeed,
+                    },
+                });
             }
+
+            const params: AWS.DynamoDB.DocumentClient.TransactWriteItemsInput = {
+                TransactItems: [
+                    {
+                        Put: {
+                            TableName: "news",
+                            Item: news,
+                        },
+                    },
+                    ...transactItems,
+                ],
+            };
+
+            await dynamoDb.transactWrite(params).promise();
 
             return {
                 statusCode: 200,
