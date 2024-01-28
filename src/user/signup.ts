@@ -76,6 +76,10 @@ export const handler = async (event: any) => {
 
         return {
             statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+            },
             body: JSON.stringify({ message: 'Error registering user' }),
         };
     }

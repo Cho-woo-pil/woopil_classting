@@ -14,6 +14,10 @@ export const handler = async (event: any) => {
         if (!token) {
             return {
                 statusCode: 401,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
+                },
                 body: JSON.stringify({error: "Unauthorized"}),
             };
         }
@@ -33,6 +37,10 @@ export const handler = async (event: any) => {
             if (!newsFeedsResult.Items || newsFeedsResult.Items.length === 0) {
                 return {
                     statusCode: 200,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': true,
+                    },
                     body: JSON.stringify([]),
                 };
             }
@@ -53,6 +61,10 @@ export const handler = async (event: any) => {
             if (!newsList.Items || newsList.Items.length === 0) {
                 return {
                     statusCode: 200,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': true,
+                    },
                     body: JSON.stringify([]),
                 };
             }
@@ -90,11 +102,19 @@ export const handler = async (event: any) => {
             );
             return {
                 statusCode: 200,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
+                },
                 body: JSON.stringify({mappedNewsList}),
             };
         } else {
             return {
                 statusCode: 401,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
+                },
                 body: JSON.stringify({error: "Token Error"}),
             };
         }
@@ -103,6 +123,10 @@ export const handler = async (event: any) => {
         console.error("Error:", error);
         return {
             statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+            },
             body: JSON.stringify({error: "Internal Server Error"}),
         };
     }

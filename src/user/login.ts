@@ -39,6 +39,10 @@ export const handler = async (event: any) => {
 
         return {
             statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+            },
             body: JSON.stringify({ message: 'Authentication successful', result }),
         };
     } catch (error) {
@@ -46,6 +50,10 @@ export const handler = async (event: any) => {
 
         return {
             statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+            },
             body: JSON.stringify({ message: 'Error during authentication' }),
         };
     }

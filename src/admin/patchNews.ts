@@ -11,6 +11,10 @@ export const handler = async (event: any) => {
         if (!token) {
             return {
                 statusCode: 401,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
+                },
                 body: JSON.stringify({ error: "Unauthorized" }),
             };
         }
@@ -24,6 +28,10 @@ export const handler = async (event: any) => {
             if (!newsId || !topic || !content) {
                 return {
                     statusCode: 400,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': true,
+                    },
                     body: JSON.stringify({error: "newsId, topic and content are required fields"}),
                 };
             }
@@ -40,6 +48,10 @@ export const handler = async (event: any) => {
             if (!existingNews.Item) {
                 return {
                     statusCode: 404,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': true,
+                    },
                     body: JSON.stringify({ error: "News not found" }),
                 };
             }
@@ -65,11 +77,19 @@ export const handler = async (event: any) => {
 
             return {
                 statusCode: 200,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
+                },
                 body: JSON.stringify({message: "news updated successfully"}),
             };
         } else {
             return {
                 statusCode: 200,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
+                },
                 body: JSON.stringify({message: "This user is not admin"}),
             };
         }
@@ -79,6 +99,10 @@ export const handler = async (event: any) => {
         console.error("Error:", error);
         return {
             statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+            },
             body: JSON.stringify({error: "Internal Server Error"}),
         };
     }

@@ -13,6 +13,10 @@ export const handler = async (event: any) => {
         if (!token) {
             return {
                 statusCode: 401,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
+                },
                 body: JSON.stringify({error: "Unauthorized"}),
             };
         }
@@ -23,6 +27,10 @@ export const handler = async (event: any) => {
             if (!schoolId) {
                 return {
                     statusCode: 400,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': true,
+                    },
                     body: JSON.stringify({error: "schoolId is required fields"}),
                 };
             }
@@ -61,17 +69,29 @@ export const handler = async (event: any) => {
 
                 return {
                     statusCode: 200,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': true,
+                    },
                     body: JSON.stringify({message: "Unsubscribe successfully"}),
                 };
             } else {
                 return {
                     statusCode: 200,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': true,
+                    },
                     body: JSON.stringify({message: "Not found subscribe"}),
                 };
             }
         } else {
             return {
                 statusCode: 401,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
+                },
                 body: JSON.stringify({error: "Token Error"}),
             };
         }
@@ -79,6 +99,10 @@ export const handler = async (event: any) => {
         console.error("Error:", error);
         return {
             statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+            },
             body: JSON.stringify({error: "Internal Server Error"}),
         };
     }
