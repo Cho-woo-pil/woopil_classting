@@ -55,6 +55,7 @@ export const handler = async (event: any) => {
                 const updateParams: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
                     TableName: "subscription",
                     Key: {
+                        schoolId: schoolId,
                         SubscriptionId: subscription.SubscriptionId,
                     },
                     UpdateExpression: "SET isDeleted = :isDeleted, deletedAt = :deletedAt",
