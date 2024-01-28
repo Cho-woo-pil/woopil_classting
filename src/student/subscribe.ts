@@ -26,16 +26,17 @@ export const handler = async (event: any) => {
                     body: JSON.stringify({error: "schoolId is required fields"}),
                 };
             }
-            const subscriptionParams: AWS.DynamoDB.DocumentClient.ScanInput = {
+            const subscriptionParams: AWS.DynamoDB.DocumentClient.QueryInput = {
                 TableName: "subscription",
-                FilterExpression: "isDeleted = :isDeleted AND username = :username AND schoolId = :schoolId",
+                KeyConditionExpression: "schoolId = :schoolId",
+                FilterExpression: "isDeleted = :isDeleted AND username = :username",
                 ExpressionAttributeValues: {
                     ":isDeleted": false,
                     ":username": username,
                     ":schoolId": schoolId
                 },
             };
-            const subscriptionsResult = await dynamoDb.scan(subscriptionParams).promise();
+            const subscriptionsResult = await dynamoDb.query(subscriptionParams).promise();
             if (subscriptionsResult.Items && subscriptionsResult.Items.length > 0) {
                 return {
                     statusCode: 200,

@@ -349,6 +349,67 @@
           }
         }
       }
+    },
+    "/student/news/all": {
+      "get": {
+        "summary": "학생의 모든 뉴스 조회 API",
+        "description": "",
+        "tags": [
+          "student"
+        ],
+        "operationId": "getAllNews.get.student/news/all",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      }
+    },
+    "/student/news/{schoolId}": {
+      "get": {
+        "summary": "학생의 구독한 특정학교 뉴스 조회 API",
+        "description": "",
+        "tags": [
+          "student"
+        ],
+        "operationId": "getSelectNews.get.student/news/{schoolId}",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "schoolId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      }
     }
   },
   "definitions": {

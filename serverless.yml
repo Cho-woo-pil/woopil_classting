@@ -155,3 +155,28 @@ functions:
           summary: '학교 구독 취소 API'
           swaggerTags: [ 'student' ]
           bodyType: SubscribeDto
+
+  getAllNews:
+    handler: src/student/getAllNews.handler
+    events:
+      - http:
+          path: student/news/all
+          method: get
+          cors: true
+          summary: '학생의 모든 뉴스 조회 API'
+          swaggerTags: [ 'student' ]
+
+  getSelectNews:
+    handler: src/student/getSelectNews.handler
+    events:
+      - http:
+          path: student/news/{schoolId}
+          method: get
+          cors: true
+          summary: '학생의 구독한 특정학교 뉴스 조회 API'
+          swaggerTags: [ 'student' ]
+          request:
+            parameters:
+              paths:
+                schoolId: true
+

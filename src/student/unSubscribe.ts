@@ -27,9 +27,10 @@ export const handler = async (event: any) => {
                 };
             }
 
-            const subscriptionParams: AWS.DynamoDB.DocumentClient.ScanInput = {
+            const subscriptionParams: AWS.DynamoDB.DocumentClient.QueryInput = {
                 TableName: "subscription",
-                FilterExpression: "isDeleted = :isDeleted AND username = :username AND schoolId = :schoolId",
+                KeyConditionExpression: "schoolId = :schoolId",
+                FilterExpression: "isDeleted = :isDeleted AND username = :username",
                 ExpressionAttributeValues: {
                     ":isDeleted": false,
                     ":username": username,
@@ -37,7 +38,7 @@ export const handler = async (event: any) => {
                 },
             };
 
-            const subscriptionsResult = await dynamoDb.scan(subscriptionParams).promise();
+            const subscriptionsResult = await dynamoDb.query(subscriptionParams).promise();
 
             // 구독 정보가 존재하면 구독 취소
             if (subscriptionsResult.Items && subscriptionsResult.Items.length > 0) {
