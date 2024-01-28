@@ -12,7 +12,7 @@ function generateRandomSchoolId() {
 }
 describe('YourHandler', () => {
     beforeEach(() => {
-        AWSMock.mock('DynamoDB.DocumentClient', 'scan', (params: any, callback: any) => {
+        AWSMock.mock('DynamoDB.DocumentClient', 'query', (params: any, callback: any) => {
             // Mocking the response for DynamoDB scan
             callback(null, { Items: [] });
         });

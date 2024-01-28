@@ -29,16 +29,8 @@ export const handler = async (event: any) => {
                 };
             }
 
-            const news = new News(schoolId, topic, content);
-            const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
-                TableName: "news",
-                Item: news
-            };
-            // DynamoDB에 데이터 삽입
-            await dynamoDb.put(params).promise();
-
             // DynamoDB에서 isDeleted가 false인 Subscription 찾기
-            const subscriptionParams: AWS.DynamoDB.DocumentClient.ScanInput = {
+            const subscriptionParams: AWS.DynamoDB.DocumentClient.QueryInput = {
                 TableName: "subscription",
                 FilterExpression: "isDeleted = :isDeleted AND schoolId = :schoolId",
                 ExpressionAttributeValues: {
@@ -46,16 +38,37 @@ export const handler = async (event: any) => {
                     ":schoolId": schoolId
                 },
             };
-            const subscriptionsResult = await dynamoDb.scan(subscriptionParams).promise();
-            // newsFeed 테이블에 등록
+            const subscriptionsResult = await dynamoDb.query(subscriptionParams).promise();
+
+
+            const news = new News(schoolId, topic, content);
+            const transactItems = [];
+
+
             for (const subscription of subscriptionsResult.Items as Subscription[]) {
-                const newsFeed = new NewsFeed(news.newsId, subscription.username);
-                const newsFeedParams: AWS.DynamoDB.DocumentClient.PutItemInput = {
-                    TableName: "newsFeed",
-                    Item: newsFeed,
-                };
-                await dynamoDb.put(newsFeedParams).promise();
+                const newsFeed = new NewsFeed(news.newsId, schoolId,subscription.username);
+
+                transactItems.push({
+                    Put: {
+                        TableName: "newsFeed",
+                        Item: newsFeed,
+                    },
+                });
             }
+
+            const params: AWS.DynamoDB.DocumentClient.TransactWriteItemsInput = {
+                TransactItems: [
+                    {
+                        Put: {
+                            TableName: "news",
+                            Item: news,
+                        },
+                    },
+                    ...transactItems,
+                ],
+            };
+
+            await dynamoDb.transactWrite(params).promise();
 
             return {
                 statusCode: 200,
@@ -71,6 +84,12 @@ export const handler = async (event: any) => {
 
     } catch (error) {
         console.error("Error:", error);
+        // 트랜잭션 취소 원인을 로그로 출력
+        // @ts-ignore
+        if (error.code === 'TransactionCanceledException') {
+            // @ts-ignore
+            console.log('CancellationReasons:', error.CancellationReasons);
+        }
         return {
             statusCode: 500,
             body: JSON.stringify({error: "Internal Server Error"}),

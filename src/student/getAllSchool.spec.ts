@@ -21,7 +21,7 @@ describe('getSchoolList', () => {
 
     it('should get the list of schools successfully', async () => {
         jest.spyOn(jsonwebtoken, 'decode').mockImplementation((token: string) => ({
-            'cognito:groups': ['admin'],
+            given_name: 'testUser'
         }));
 
         const event = {

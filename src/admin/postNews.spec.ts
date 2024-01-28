@@ -14,7 +14,7 @@ describe('postNews', () => {
             callback(null, 'successfully put item');
         });
 
-        AWSMock.mock('DynamoDB.DocumentClient', 'scan', (params: any, callback: any) => {
+        AWSMock.mock('DynamoDB.DocumentClient', 'query', (params: any, callback: any) => {
             // Assuming that there is only one subscription for simplicity
             callback(null, { Items: [{ email: 'test@example.com' }] });
         });
