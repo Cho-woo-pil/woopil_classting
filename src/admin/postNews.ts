@@ -40,7 +40,8 @@ export const handler = async (event: any) => {
             // DynamoDB에서 isDeleted가 false인 Subscription 찾기
             const subscriptionParams: AWS.DynamoDB.DocumentClient.QueryInput = {
                 TableName: "subscription",
-                FilterExpression: "isDeleted = :isDeleted AND schoolId = :schoolId",
+                KeyConditionExpression: "schoolId = :schoolId",
+                FilterExpression: "isDeleted = :isDeleted",
                 ExpressionAttributeValues: {
                     ":isDeleted": false,
                     ":schoolId": schoolId
