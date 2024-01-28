@@ -22,6 +22,18 @@
 6. API Specification으로 Swagger 사용
 - 스웨거 구현
 - [스웨거 주소](https://74skmq1mmk.execute-api.ap-northeast-2.amazonaws.com/swagger)
+
+
+## 🛠 사용 기술 스택
+- serverless framework
+- nodeJs
+- TypeScript
+- Aws lambda
+- Aws cognito
+- Aws Apigateway
+- Aws DynamoDB
+- Swagger
+- jest
   
 ## ❓ 구현 내용 및 구동 방법
 1. 스웨거 홈
@@ -141,16 +153,6 @@
     <p align="center">
   <img src="https://github.com/Cho-woo-pil/kstd/assets/20333090/5f681a66-424a-4121-9c98-961ae7815b1a"></p>
 
-## 🛠 사용 기술
-- serverless framework
-- nodeJs
-- TypeScript
-- Aws lambda
-- Aws cognito
-- Aws Apigateway
-- Aws DynamoDB
-- Swagger
-- jest
 
 ## 🙋‍♀️ Trouble Shooting
 1. DynamoDB 파티션키, 정렬키에 대한 이해
